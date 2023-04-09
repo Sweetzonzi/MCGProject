@@ -43,6 +43,7 @@ public abstract class GuidedProjectile extends BasicProjectile{
             //获取目标方向
             Vec3 tgt = this.getTarget().getPosition(0).subtract(this.getPosition(0)).normalize();
             Vec3 v = this.getDeltaMovement();//获取速度方向
+            //Todo:限制每tick旋转角度
             float d0 = (float) v.length();//获取速度大小
             v.normalize();//速度方向单位化
 

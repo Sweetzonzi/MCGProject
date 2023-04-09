@@ -23,6 +23,7 @@ public abstract class BasicProjectile extends Projectile {
     //在世界的0，0，0处生成投射物
     protected BasicProjectile(EntityType<? extends BasicProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.setNoGravity(true);
     }
 
     //根据坐标生成投射物
@@ -39,18 +40,23 @@ public abstract class BasicProjectile extends Projectile {
 
     @Override
     public void tick(){
-        super.tick();
         //检查是否有命中
         HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
             this.onHit(hitresult);//有命中则调用对应方法
         }
         tickDespawn();//寿命增长，超过最大寿命则清除
+        if (!this.isNoGravity()) {
+            Vec3 vec34 = this.getDeltaMovement();
+            this.setDeltaMovement(vec34.x, vec34.y - (double)0.05F, vec34.z);
+        }
         this.move();
+        super.tick();
     }
 
     //运动
     public void move(){
+
         //位移
         Vec3 vec3 = this.getDeltaMovement();
         double dx = vec3.x;

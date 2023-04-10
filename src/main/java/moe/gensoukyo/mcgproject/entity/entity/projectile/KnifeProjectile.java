@@ -1,18 +1,14 @@
 package moe.gensoukyo.mcgproject.entity.entity.projectile;
 
-import moe.gensoukyo.mcgproject.entity.entity.projectile.template.BasicProjectile;
 import moe.gensoukyo.mcgproject.entity.entity.projectile.template.GuidedProjectile;
 import moe.gensoukyo.mcgproject.registry.EntityRegistry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 
+//示例制导投射物
 public class KnifeProjectile extends GuidedProjectile {
     //构造方法
     public KnifeProjectile(EntityType<? extends GuidedProjectile> pEntityType, Level pLevel) {

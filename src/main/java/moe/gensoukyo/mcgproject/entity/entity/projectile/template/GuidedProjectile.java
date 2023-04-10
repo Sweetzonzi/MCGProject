@@ -1,9 +1,12 @@
 package moe.gensoukyo.mcgproject.entity.entity.projectile.template;
 
 import moe.gensoukyo.mcgproject.entity.entity.projectile.KnifeProjectile;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -11,11 +14,11 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 //有简易制导功能的投射物模板
-public abstract class GuidedProjectile extends BasicProjectile{
+public abstract class GuidedProjectile extends BasicProjectile {
+
     @Nullable
     private Entity target;//投射物当前锁定的目标
-    private float trackPitch = 0;//俯仰跟踪能力，rad/tick
-    private float trackYaw = 0;//水平跟踪能力，rad/tick
+    private float trackSpeed = 0;//跟踪能力，rad/tick
 
     //在世界的0，0，0处生成投射物
     protected GuidedProjectile(EntityType<? extends BasicProjectile> pEntityType, Level pLevel) {
@@ -35,19 +38,33 @@ public abstract class GuidedProjectile extends BasicProjectile{
     @Override
     public void tick() {
         track();
+        if (this.level.isClientSide) {
+            this.level.addParticle(ParticleTypes.END_ROD, true, this.getX(), this.getY() + 0.15D, this.getZ(), 0.0D, 0.0D, 0.0D);
+        }
         super.tick();
     }
 
-    protected void track(){
-        if(this.getTarget()!=null){
-            //获取目标方向
-            Vec3 tgt = this.getTarget().getPosition(0).subtract(this.getPosition(0)).normalize();
-            Vec3 v = this.getDeltaMovement();//获取速度方向
-            //Todo:限制每tick旋转角度
-            float d0 = (float) v.length();//获取速度大小
-            v.normalize();//速度方向单位化
+    protected void track(){//简单的追踪目标当前位置，不考虑其速度
 
-            this.setDeltaMovement(tgt.scale(d0));
+        if(this.getTarget()!=null) {
+            Vec3 v = this.getDeltaMovement();//获取速度方向
+            float speed = (float) v.length();//获取速度大小
+            v= v.normalize();//速度方向单位化
+            //获取目标方向
+            Vec3 tgt = this.getTarget().getPosition(1).subtract(this.getPosition(1)).normalize();
+            Vec3 aim;//创建新的瞄准方向
+            float deltaA = (float) Math.acos(v.dot(tgt));//计算角度差（弧度制）
+            if(Math.abs(deltaA)<=this.getTrackSpeed()){//目标方向在角度限制之内则
+                aim = tgt;//直接转向目标
+            }
+            else{//否则应用罗德里格旋转公式
+                Vec3 axis = v.cross(tgt);//获取旋转轴
+                Vec3 aim1 = v.scale(Math.cos(-getTrackSpeed()));//第一项
+                Vec3 aim2 = axis.scale(v.dot(axis)*(1-Math.cos(-getTrackSpeed())));//第二项
+                Vec3 aim3 = v.cross(axis).scale(Math.sin(-getTrackSpeed()));//第三项
+                aim =aim1.add(aim2).add(aim3);//向目标旋转限定角度
+            }
+            this.setDeltaMovement(aim.scale(speed));
         }
     }
 
@@ -61,25 +78,17 @@ public abstract class GuidedProjectile extends BasicProjectile{
         return target;
     }
 
-    public void setTarget(Entity target) {
+    public void setTarget(LivingEntity target) {
         this.target = target;
     }
 
-    public float getTrackPitch() {
-        return trackPitch;
+    public float getTrackSpeed() {
+        return trackSpeed;
     }
 
-    //俯仰跟踪角速度，degree/s
-    public void setTrackPitch(float trackPitch) {
-        this.trackPitch = (float) (trackPitch*Math.PI/180/20);//角度转弧度，秒转tick
+    //跟踪角速度，degree/s
+    public void setTrackSpeed(float trackSpeed) {
+        this.trackSpeed = (float) (trackSpeed*Math.PI/180/20);//角度转弧度，秒转tick
     }
 
-    public float getTrackYaw() {
-        return trackYaw;
-    }
-
-    //水平跟踪角速度，degree/s
-    public void setTrackYaw(float trackYaw) {
-        this.trackYaw = (float) (trackYaw*Math.PI/180/20);//角度转弧度，秒转tick
-    }
 }

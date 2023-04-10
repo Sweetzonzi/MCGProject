@@ -37,7 +37,7 @@ public class KnifeProjectileRenderer extends EntityRenderer<KnifeProjectile> {
         pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot())+180F));
         pMatrixStack.mulPose(Vector3f.XP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
         //修正模型和实际碰撞箱之间的偏移
-        pMatrixStack.translate(0,-1,0);
+        pMatrixStack.translate(0,-1.25,0);
         //绘制模型
         this.model.renderToBuffer(pMatrixStack,pBuffer.getBuffer(this.model.renderType(this.getTextureLocation(pEntity))),pPackedLight, OverlayTexture.NO_OVERLAY,1f,1f,1f,1f);
         pMatrixStack.popPose();//渲染相关内容要在这之上

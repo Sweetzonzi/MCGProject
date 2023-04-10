@@ -24,6 +24,7 @@ public abstract class BasicProjectile extends Projectile {
     protected BasicProjectile(EntityType<? extends BasicProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         this.setNoGravity(true);
+        this.noPhysics=false;
     }
 
     //根据坐标生成投射物
@@ -46,9 +47,9 @@ public abstract class BasicProjectile extends Projectile {
             this.onHit(hitresult);//有命中则调用对应方法
         }
         tickDespawn();//寿命增长，超过最大寿命则清除
-        if (!this.isNoGravity()) {
-            Vec3 vec34 = this.getDeltaMovement();
-            this.setDeltaMovement(vec34.x, vec34.y - (double)0.05F, vec34.z);
+        Vec3 v = this.getDeltaMovement();
+        if (!this.isNoGravity()) {//重力
+            this.setDeltaMovement(v.x, v.y - 0.03, v.z);
         }
         this.move();
         super.tick();
@@ -79,14 +80,16 @@ public abstract class BasicProjectile extends Projectile {
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
-        byte pierce = this.getPierceLevel();
-        if(pierce > 0){
-            this.setPierceLevel((byte) (pierce-1));
+        if(this.getOwner()!=pResult.getEntity()){
+            byte pierce = this.getPierceLevel();
+            if(pierce > 0){
+                this.setPierceLevel((byte) (pierce-1));
+            }
+            else{
+                this.despawn();
+            }
+            super.onHitEntity(pResult);
         }
-        else{
-            this.despawn();
-        }
-        super.onHitEntity(pResult);
     }
 
     @Override

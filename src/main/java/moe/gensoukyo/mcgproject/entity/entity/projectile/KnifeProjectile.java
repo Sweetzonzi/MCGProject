@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class KnifeProjectile extends GuidedProjectile {
     //构造方法
-    public KnifeProjectile(EntityType<? extends BasicProjectile> pEntityType, Level pLevel) {
+    public KnifeProjectile(EntityType<? extends GuidedProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
     //根据坐标生成投射物

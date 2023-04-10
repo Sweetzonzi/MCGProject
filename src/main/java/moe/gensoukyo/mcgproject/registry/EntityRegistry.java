@@ -15,6 +15,6 @@ public class EntityRegistry {
         ()-> EntityType.Builder.<KnifeProjectile>of(KnifeProjectile::new, MobCategory.MISC)
                 .sized(0.5f, 0.5f)
                 .clientTrackingRange(4)
-                .updateInterval(20)
+                .updateInterval(1)
                 .build("knife_projectile"));
 }

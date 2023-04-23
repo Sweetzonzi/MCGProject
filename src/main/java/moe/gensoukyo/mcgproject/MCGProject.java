@@ -16,8 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-@Mod(MCGProject.MOD_ID)
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = MCGProject.MOD_ID)
 public class MCGProject {
     public final static String MOD_ID = "mcgproject";
     public static final Logger logger = LogUtils.getLogger();//log输出相关
@@ -33,16 +32,23 @@ public class MCGProject {
         ItemRegistry.ITEMS.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
+
+        //注册按键事件
+        //modEventBus.addListener(HotKeyRegistry::onClientInit);
         //为特定方块添加全透明/半透明效果
         modEventBus.addListener(RenderRegistry::registerBlockRender);
         //注册实体模型
         modEventBus.addListener(RenderRegistry::onRegisterLayers);
         //注册实体渲染器
         modEventBus.addListener(RenderRegistry::registerRenderers);
+        //发包相关注册
+        //modEventBus.addListener(Messages::init);
         //替换玩家模型
-        forgeEventBus.addListener(RenderRegistry::registerPlayerRenderers);
+        //forgeEventBus.addListener(RenderRegistry::registerPlayerRenderers);
         //为可变色方块定义染色逻辑
         modEventBus.addListener(BlockColorRegistry::blockColorHandle);
+        //相机
+        //forgeEventBus.addListener(RenderRegistry::onCameraSetup);
 
     }
     @SubscribeEvent

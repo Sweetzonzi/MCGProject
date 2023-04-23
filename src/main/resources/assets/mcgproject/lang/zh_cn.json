@@ -1,5 +1,10 @@
 {
+  "key.categories.mcgproject": "MCGProject",
+  "key.mcgproject.locktarget": "锁定目标",
+
   "itemGroup.mcg_nature": "MCG:自然",
+  "block.mcgproject.ivy": "爬山虎",
+
   "itemGroup.mcg_prop": "MCG:道具",
-  "block.mcgproject.ivy": "爬山虎"
+  "item.tester": "测试弹幕发射器"
 }

@@ -1,6 +1,7 @@
 package moe.gensoukyo.mcgproject.item.prop;
 
 import moe.gensoukyo.mcgproject.entity.entity.projectile.KnifeProjectile;
+//import moe.gensoukyo.mcgproject.mixininterface.IMixinLockTarget;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -38,6 +39,7 @@ public class TesterItem extends Item {
                 if(tgt!=null){pPlayer.sendMessage(tgt.getName(),pPlayer.getUUID());}
                 knife.setTarget(tgt);//录入目标
                 pLevel.addFreshEntity(knife);
+                //tgt = ((IMixinLockTarget)pPlayer).getTarget();
             }
         }
         return super.use(pLevel, pPlayer, pUsedHand);

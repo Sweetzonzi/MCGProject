@@ -12,11 +12,5 @@ public class GeckolibResources {//储存所有Geckolib模型，动画和材质�
             "textures/entity/player.png");
     public static final ResourceLocation REPLACED_PLAYER_ANIMATIONS = new ResourceLocation(MCGProject.MOD_ID,
             "animations/player.animation.json");
-    //飞刀投射物
-    public static final ResourceLocation KNIFE_MODEL = new ResourceLocation(MCGProject.MOD_ID,
-            "geo/knife.geo.json");
-    public static final ResourceLocation KNIFE_TEXTURE = new ResourceLocation(MCGProject.MOD_ID,
-            "textures/entity/knife.png");
-    public static final ResourceLocation KNIFE_ANIMATIONS = new ResourceLocation(MCGProject.MOD_ID,
-            "animations/knife.animation.json");
+
 }

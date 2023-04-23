@@ -14,9 +14,13 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -46,7 +50,7 @@ public class RenderRegistry {
         event.registerEntityRenderer(EntityRegistry.KNIFE_PROJECTILE.get(), KnifeProjectileRenderer::new);
     }
 
-    @SubscribeEvent//替换玩家模型
+    /*@SubscribeEvent//替换玩家模型
     public static void registerPlayerRenderers(final RenderPlayerEvent.Pre event) {
         //以下代码来自Yes Steve Mod
         EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
@@ -61,5 +65,12 @@ public class RenderRegistry {
         //调用Geckolib提供的渲染方法
         renderer.render(event.getPlayer(), event.getPlayer().getYRot(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
         event.setCanceled(true);//移除原版玩家渲染
-    }
+    }*/
+/*    @SubscribeEvent
+    public static void onCameraSetup(final EntityViewRenderEvent.CameraSetup event){
+        Entity entity = event.getCamera().getEntity();
+        if(entity instanceof Player){
+            entity.sendMessage(new TextComponent("camerasetup"),entity.getUUID());
+        }
+    }*/
 }

@@ -2,6 +2,7 @@ package moe.gensoukyo.mcgproject.item.prop;
 
 import moe.gensoukyo.mcgproject.entity.entity.projectile.KnifeProjectile;
 //import moe.gensoukyo.mcgproject.mixininterface.IMixinLockTarget;
+import moe.gensoukyo.mcgproject.mixininterface.IMixinLockTarget;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,21 +26,9 @@ public class TesterItem extends Item {
                 KnifeProjectile knife = new KnifeProjectile(pLevel, pPlayer);//创建
                 knife.setTrackSpeed(90);
                 knife.shootFromRotation(pPlayer,pPlayer.getXRot(), pPlayer.getYRot(), 0F, 1F, 60F);//根据头朝向发射
-                EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(//获取目标
-                        pPlayer,
-                        pPlayer.getEyePosition(),
-                        pPlayer.getEyePosition().add(pPlayer.getViewVector(1).scale(64)),
-                        pPlayer.getBoundingBox().expandTowards(pPlayer.getViewVector(1).scale(64)).inflate(1.0D),
-                        (e)-> !(e instanceof Projectile),
-                        64*64);
-                LivingEntity tgt = null;
-                if(hitResult != null&&hitResult.getEntity()instanceof LivingEntity){
-                    tgt = (LivingEntity) hitResult.getEntity();
-                }
-                if(tgt!=null){pPlayer.sendMessage(tgt.getName(),pPlayer.getUUID());}
+                LivingEntity tgt = ((IMixinLockTarget)pPlayer).getTarget();
                 knife.setTarget(tgt);//录入目标
                 pLevel.addFreshEntity(knife);
-                //tgt = ((IMixinLockTarget)pPlayer).getTarget();
             }
         }
         return super.use(pLevel, pPlayer, pUsedHand);

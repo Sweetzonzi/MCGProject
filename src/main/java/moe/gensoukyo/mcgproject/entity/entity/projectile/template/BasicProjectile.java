@@ -1,10 +1,14 @@
 package moe.gensoukyo.mcgproject.entity.entity.projectile.template;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -19,6 +23,9 @@ public abstract class BasicProjectile extends Projectile {
     private static final EntityDataAccessor<Byte> PIERCE_LEVEL = SynchedEntityData.defineId(BasicProjectile.class, EntityDataSerializers.BYTE);
     private int max_life = 200;
     private int life;
+    public int health = 1;
+    public float drag = 0;//阻力(TODO)
+    public Vec3 acceleration = new Vec3(0,0,0);//加速度(TODO)
 
     //在世界的0，0，0处生成投射物
     protected BasicProjectile(EntityType<? extends BasicProjectile> pEntityType, Level pLevel) {
@@ -49,7 +56,7 @@ public abstract class BasicProjectile extends Projectile {
         tickDespawn();//寿命增长，超过最大寿命则清除
         Vec3 v = this.getDeltaMovement();
         if (!this.isNoGravity()) {//重力
-            this.setDeltaMovement(v.x, v.y - 0.03, v.z);
+            this.setDeltaMovement(v.x, v.y - 0.02, v.z);
         }
         this.move();
         super.tick();
@@ -109,7 +116,17 @@ public abstract class BasicProjectile extends Projectile {
         if (this.life >= max_life) {
             this.discard();
         }
+    }
 
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if (!this.level.isClientSide) {
+            this.health -= pAmount;
+            if (this.health <= 0){
+                ((ServerLevel)this.level).sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+                this.discard();
+            }
+        }
+        return true;
     }
 
     @Override//先在服务端创建，再发包通知客户端创建

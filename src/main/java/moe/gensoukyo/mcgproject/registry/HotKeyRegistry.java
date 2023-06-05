@@ -1,8 +1,8 @@
-/*
 package moe.gensoukyo.mcgproject.registry;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import moe.gensoukyo.mcgproject.MCGProject;
+import moe.gensoukyo.mcgproject.network.PacketLockTarget;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
@@ -23,15 +23,15 @@ public class HotKeyRegistry {
     public static KeyMapping lockTargetKeyMapping;
 
     public static void init() {
-        lockTargetKeyMapping = new KeyMapping(KEY_LOCK_TARGET, KeyConflictContext.IN_GAME, InputConstants.getKey("key.keyboard.q"), KEY_CATEGORIES_MCGPROJECT);
+        lockTargetKeyMapping = new KeyMapping(KEY_LOCK_TARGET, KeyConflictContext.IN_GAME,
+                InputConstants.getKey("key.keyboard.q"), KEY_CATEGORIES_MCGPROJECT);
         ClientRegistry.registerKeyBinding(lockTargetKeyMapping);
     }
 
     @SubscribeEvent
     public static void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (lockTargetKeyMapping.consumeClick()) {
-            //Messages.sendToServer(new PacketLockTarget());
-            System.out.println("q is pressed");
+        if (lockTargetKeyMapping.consumeClick()) {//锁定目标键被按下时
+            PacketRegistry.sendToServer(new PacketLockTarget());//发包给服务器处理
         }
     }
 
@@ -41,4 +41,3 @@ public class HotKeyRegistry {
         init();
     }
 }
-*/

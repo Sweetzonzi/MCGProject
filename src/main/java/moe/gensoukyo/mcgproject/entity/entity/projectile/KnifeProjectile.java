@@ -25,7 +25,7 @@ public class KnifeProjectile extends GuidedProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
-        pResult.getEntity().hurt(DamageSource.MAGIC,0);
+        pResult.getEntity().hurt(DamageSource.MAGIC,1);
         super.onHitEntity(pResult);
     }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/tinted_cross",
+  "textures": {
+    "cross": "mcgproject:block/nature/bamboo_shoot_fresh"
+  }
+}

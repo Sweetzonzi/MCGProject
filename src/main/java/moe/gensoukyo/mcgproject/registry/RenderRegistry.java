@@ -5,6 +5,7 @@ import moe.gensoukyo.mcgproject.block.MCGNatureBlocks;
 import moe.gensoukyo.mcgproject.entity.model.projectile.KnifeProjectileModel;
 import moe.gensoukyo.mcgproject.entity.renderer.projectile.KnifeProjectileRenderer;
 import moe.gensoukyo.mcgproject.geckolib.renderer.entity.ReplacedPlayerRenderer;
+import moe.gensoukyo.mcgproject.mixininterface.IMixinLockTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -17,7 +18,9 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -38,6 +41,11 @@ public class RenderRegistry {
         ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.PADDY_DENSE.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.PADDY_SPARSE.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.WATER_FARMLAND.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.BAMBOO.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.BAMBOO_BIG_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.BAMBOO_SMALL_LEAVES.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.BAMBOO_SHOOT_FRESH.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(MCGNatureBlocks.BAMBOO_SHOOT_OLD.get(), RenderType.cutoutMipped());
     }
 
     @SubscribeEvent//注册实体模型
@@ -65,12 +73,5 @@ public class RenderRegistry {
         //调用Geckolib提供的渲染方法
         renderer.render(event.getPlayer(), event.getPlayer().getYRot(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight());
         event.setCanceled(true);//移除原版玩家渲染
-    }*/
-/*    @SubscribeEvent
-    public static void onCameraSetup(final EntityViewRenderEvent.CameraSetup event){
-        Entity entity = event.getCamera().getEntity();
-        if(entity instanceof Player){
-            entity.sendMessage(new TextComponent("camerasetup"),entity.getUUID());
-        }
     }*/
 }

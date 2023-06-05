@@ -1,6 +1,7 @@
 package moe.gensoukyo.mcgproject.creativemodetab;
 
 import moe.gensoukyo.mcgproject.block.MCGNatureBlocks;
+import moe.gensoukyo.mcgproject.block.MCGStructureBlocks;
 import moe.gensoukyo.mcgproject.item.MCGPropItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +17,12 @@ public class MCGTab {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(MCGPropItems.TESTER.get());
+        }
+    };
+    public static final CreativeModeTab MCG_STRUCTURE = new CreativeModeTab("mcg_structure") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(MCGStructureBlocks.NAMAKO.get());
         }
     };
 }
